@@ -1,0 +1,487 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HEXO typora github blog 博客搭建 | ALOHA</title><meta name="author" content="Epichide"><meta name="copyright" content="Epichide"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="介绍hexo 的基本生成部署操作和typora的文件如何更新到博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HEXO typora github blog 博客搭建">
+<meta property="og:url" content="https://epichide.github.io/2024/06/10/blog-github/index.html">
+<meta property="og:site_name" content="ALOHA">
+<meta property="og:description" content="介绍hexo 的基本生成部署操作和typora的文件如何更新到博客">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://epichide.github.io/img/fu.png">
+<meta property="article:published_time" content="2024-06-10T08:35:20.000Z">
+<meta property="article:modified_time" content="2024-08-11T08:42:08.007Z">
+<meta property="article:author" content="Epichide">
+<meta property="article:tag" content="github">
+<meta property="article:tag" content="typora">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://epichide.github.io/img/fu.png"><link rel="shortcut icon" href="/img/fu.png"><link rel="canonical" href="https://epichide.github.io/2024/06/10/blog-github/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HEXO typora github blog 博客搭建',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-11 16:42:08'
+}</script><meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="ALOHA" type="application/atom+xml">
+</head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ALOHA"><span class="site-name">ALOHA</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">HEXO typora github blog 博客搭建</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-06-10T08:35:20.000Z" title="Created 2024-06-10 16:35:20">2024-06-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-08-11T08:42:08.007Z" title="Updated 2024-08-11 16:42:08">2024-08-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web/">web</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="HEXO typora github blog 博客搭建"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>介绍hexo 的基本生成部署操作和typora的文件如何更新到博客</p>
+<span id="more"></span>
+<h1 id="hexo-基本操作">Hexo 基本操作</h1>
+<p>我们定义根目录是含有主题、 source等信息的根目录，如下是根目录内的文件</p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811020929586-17233261976041.png" alt><figcaption>image-20240811020929586</figcaption>
+</figure>
+<p>首先是要先把新建的仓库clone到本地，新建博客源码分支，初始化hexo，具体命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ git clone xxxxxx // xxxxx是github上复制的clone地址</span><br><span class="line"></span><br><span class="line">$ cd xxxxxx // clone到本地会生成一个跟仓库同名的目录</span><br><span class="line"></span><br><span class="line">$ git checkout -b hexo // 创建并切换到hexo分支</span><br><span class="line"></span><br><span class="line">$ hexo init hexo // 初始化hexo，第一个hexo是cmd，第二个hexo是新建hexo目录</span><br><span class="line"></span><br><span class="line">$ cd hexo // 进入新建的hexo目录</span><br><span class="line"></span><br><span class="line">$ npm install // 安装相关依赖</span><br><span class="line"></span><br><span class="line">$ hexo g // generate，生成静态网站</span><br><span class="line"></span><br><span class="line">$ hexo s // server，本地预览</span><br><span class="line">12345678910111213141516</span><br></pre></td></tr></table></figure>
+<p>到这里就可以打开浏览器输入<strong>localhost:4000</strong>，进行本地预览了。</p>
+<h1 id="站点文件配置">站点文件配置</h1>
+<p>还需要修改Hexo的配置文件<code>_config.yml</code>，注意此文件应位于<strong>hexo</strong>目录下，称为<strong>站点配置文件</strong>。在<strong>themes/主题名</strong>路径下也有一个<code>_config.yml</code>，称之为<strong>主题配置文件</strong>。在站点配置文件同级目录下，你可以添加多个主题</p>
+<h2 id="添加主题">添加主题</h2>
+<p>比如添加next主题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> hexo //确保当前目录处于站点配置目录下</span><br><span class="line"></span><br><span class="line">// <span class="built_in">clone</span> NexT主题，如果使用https <span class="built_in">clone</span>报错，可以自行替换为ssh的链接</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next </span><br></pre></td></tr></table></figure>
+<p>执行如下命令本地验证主题是否生效：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean // 清理之前生成的资源</span><br><span class="line">$ hexo g // 重新生成</span><br><span class="line">$ hexo s // 启动本地服务</span><br><span class="line">123</span><br></pre></td></tr></table></figure>
+<p>打开浏览器输入<strong>localhost:4000</strong>，进行本地预览。</p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811021553913.png" alt><figcaption>image-20240811021553913</figcaption>
+</figure>
+<h2 id="部署deploy到github">部署deploy到github</h2>
+<p>首先需要安装插件<strong>hexo-deployer-git</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>修改<strong>站点配置文件</strong>，搜索<strong>deploy</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo:</span><br><span class="line">  	# 需要替换为自己仓库的链接，根据https或ssh方式不同自由选择，我已经上传了公钥，所以选择ssh</span><br><span class="line">  	# 如果你配置了多用户ssh，可考虑更改 github.com 为你设置的histname，</span><br><span class="line">  	# 比如 github: git@github_aaa:treeknows/treeknows.github.io.git</span><br><span class="line">    github: git@github.com:treeknows/treeknows.github.io.git</span><br><span class="line">  # 此处似乎只能选择master，配置为main时，实际还是会部署到master分支</span><br><span class="line">  branch: master</span><br><span class="line">123456789</span><br></pre></td></tr></table></figure>
+<p>可以将配置修改为如上，记得<strong>替换自己的仓库链接</strong>。此外配置branch时，设置为<strong>main</strong>实测是无效的，依旧会push到master分支，如果没有master分支，则会自己创建。这也是为什么在前面推荐<strong>修改默认创建分支为master</strong>，来自强迫症患者的倔强。</p>
+<h3 id="多个github账号配置和多个hexo博客地址配置">多个GitHub账号配置和多个Hexo博客地址配置</h3>
+<p>如果你使用 多个GitHub账号配置和多个Hexo博客地址配置， 则需要做一些操作</p>
+<h3 id="删除全局配置">删除全局配置</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global --unset 'user.name'</span><br><span class="line">git config --global --unset 'user.email'</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="设置local配置">设置local配置</h3>
+<p>在自己的每个文件夹(repo仓库)下,打开Git Bash,然后进行设置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name `xxx`</span><br><span class="line">git config user.email `xxx@xxx.com`</span><br></pre></td></tr></table></figure>
+<h3 id="部署到github">部署到Github</h3>
+<p>修改配置后，需要手动部署到Github</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+<p>部署成功后，稍待片刻，便可访问GitHub上自己的博客查看效果了。</p>
+<h3 id="问题">问题</h3>
+<h4 id="问题1">问题1：</h4>
+<blockquote>
+<p>You have to configure the deployment settings in _config.yml first!</p>
+</blockquote>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811023454559.png" alt><figcaption>image-20240811023454559</figcaption>
+</figure>
+<p>原因：yml格式不对 冒号后面唯一空格，是repo 不是github</p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811023624065.png" alt><figcaption>image-20240811023624065</figcaption>
+</figure>
+<h4 id="问题2">问题2</h4>
+<blockquote>
+<p>fatal: unable to auto-detect email address</p>
+<p>https://blog.csdn.net/nineya_com/article/details/103301870</p>
+</blockquote>
+<figure>
+<img src="/2024/06/10/blog-github/1443301e9df254b1f0e03f9694d33ede.png" alt><figcaption>在这里插入图片描述</figcaption>
+</figure>
+<p>2.进入我们博客目录的“.deploy_git.git”子目录，找到config文件。 <img src="/2024/06/10/blog-github/3e2c52f3470fa9ddfb14721375bfdc4f.png" alt="在这里插入图片描述"></p>
+<p>3.打开config文件，添加以下内容</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">	email<span class="operator">=</span>你的邮箱</span><br><span class="line">	name<span class="operator">=</span><span class="type">GitHub用户名</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>再次运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+<h4 id="问题3blog-404">问题3：blog 404</h4>
+<blockquote>
+<p>github创建个人网页登录后404无法显示的问题</p>
+<p>https://blog.csdn.net/weixin_43658047/article/details/133742886</p>
+</blockquote>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811031004276.png" alt><figcaption>image-20240811031004276</figcaption>
+</figure>
+<p>1.首先必须要有内容，默认是会找index.html文件，找不到该文件会找readme.<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=md文件&amp;spm=1001.2101.3001.7020">md文件</a>，也就是说最简单的方法是，创建了与用户名同名的repository后username.github.io后，添加一个readme.md文件，得在readme里打点字，这个里面得有东西</p>
+<p>2.另外在username.github.io这个repository的setting/github page中这个选择Deploy from a branch，注意将仓库里里的main分支改为master，同时在下图页面，将底下默认的main改成master，就能访问了</p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811031048976.png" alt><figcaption>image-20240811031048976</figcaption>
+</figure>
+<h1 id="typora更新至blog">typora更新至blog</h1>
+<h2 id="generate-md-和image存放结构">generate md 和image存放结构</h2>
+<p>在 讨论图片如何设置前，我们需要先知道 hexo g 的时候图片和md文件会如何放置</p>
+<p>在<code>_config.yml</code>文件里有一个参数 <code>post_asset_folder</code> , 它有两个作用：</p>
+<ol type="1">
+<li><p>如果为<strong>true</strong>， 会在使用 hexe new blogname 时候，在创建 md文件同时 ，还创建一个同名文件夹</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_posts</span><br><span class="line">	[blogname.md]</span><br><span class="line">	[blogname]</span><br></pre></td></tr></table></figure>
+<p>同时还需要安装一个插件 <code>hexo-asset-image</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install https:<span class="comment">//github.com/CodeFalling/hexo-asset-image --save</span></span><br></pre></td></tr></table></figure>
+<p>即post_asset_folder 激活 和 hexo-asset-image 插件安装好情况下，在generate的时候，</p>
+<p>除了 在imgs在存放 img ，还在 blog里存放img</p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811123640730.png" alt><figcaption>image-20240811123640730</figcaption>
+</figure></li>
+<li><p>如果为<strong>false</strong>，只在source/imgs在存放 img</p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811123744791.png" alt><figcaption>image-20240811123744791</figcaption>
+</figure></li>
+</ol>
+<p>总结路径关系：</p>
+<ol type="1">
+<li><code>source/posts</code>里 的 <strong>md</strong> → <code>public/yy/mm/dd/blogname/index.html</code></li>
+<li><code>source/imgs/blogname</code>里 的 <strong>image</strong> → <code>public/imgs/blogname/image</code></li>
+<li><code>source/posts/blogname</code>里 的 <strong>image</strong> → <code>public/yy/mm/dd/blogname/images</code>(只在post_asset_folder 为true + 安装hexo-asset-image时 产生 )</li>
+</ol>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811051938209.png" alt><figcaption>image-20240811051938209</figcaption>
+</figure>
+<h2 id="typora图片路径">typora图片路径</h2>
+<p>根据是否激活<code>post_asset_folder</code>，其路径配置也不太一样， 目前 只有激活的的没有问题，没有激活的html的图片显示还是有些问题没有解决</p>
+<h3 id="post_asset_folder-为-true"><code>post_asset_folder</code> 为 true</h3>
+<p>我们先观察blog取的图片路径，以next主题为例（其他主题可能有差异，不能确定是否适用），需要显示图片的主要有两个地方：1. home 预览页即主页 2. 完整博客内容页</p>
+<p>切换 post_asset_folder 后，注意要使用hexo clean 一下</p>
+<p><code>post_asset_folder</code> 为 true+ 安装hexo-asset-image，预览和博客的图片根路径都是 <code>public/yy/mm/dd</code>：</p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811130130376.png" alt><figcaption>image-20240811130130376</figcaption>
+</figure>
+<p><code>post_asset_folder</code> 为 false+ 安装hexo-asset-image，预览的路径<code>public</code> 博客路径<code>public/yy/mm/dd/blogname</code> ，使用的路径是不同的，因而需要存放多次，可能存在预览和博客内容不一致的情况：</p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811130511497.png" alt><figcaption>image-20240811130511497</figcaption>
+</figure>
+<p>那么在上传新的博客的时候，只要在_posts 存放 md 文件和同名文件即可，md 按照<code>blogname/image</code>的形式获取即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_posts</span><br><span class="line">	[blogname.md]</span><br><span class="line">	[blogname]</span><br></pre></td></tr></table></figure>
+<p>typora 图片拷贝文件位置就可以这样设置<code>./$(filename)</code></p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811132309452.png" alt><figcaption>image-20240811132309452</figcaption>
+</figure>
+<h3 id="post_asset_folder-为-false"><code>post_asset_folder</code> 为 false</h3>
+<blockquote>
+<p>没整明白。。。。。。</p>
+</blockquote>
+<p>对于hexo 图片的路径和博客是分开的，图片从根目录开始为 imgs/标题名/xxxpng ，比如下面这个是一个能够正常获取的图片路径 <code>imgs\blogname\xxx.png</code></p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811052444531.png" alt><figcaption>image-20240811052444531</figcaption>
+</figure>
+<p>因此typora的图片插入路径需要与之保持统一，即路径名一致 <code>imgs\blogname\xxx.png</code></p>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811052608295.png" alt><figcaption>typora img path</figcaption>
+</figure>
+<p>我们只要确保md能够通过这一路径访问并显示图片，那么我们就能实现typora和网页端都能正常显示图片了，typora 显示这种路径规则的图片有多种方式：</p>
+<ol type="1">
+<li><p>最简单的，把图像存在imgs中</p>
+<ol type="1">
+<li>在preference中设置图片的copy路径 ，<code>imgs/$filename</code></li>
+<li>在md 文件中 用 <code>imgs\blogname\xxx.png</code> 获取图片</li>
+</ol></li>
+<li><p>多种组合实现：举个例子：</p>
+<ol type="1">
+<li><p>在preference中设置图片的copy路径 ，比如 <code>../imgs/$filename</code></p></li>
+<li><p>在format - image - use image root path 设置 <code>..</code> 上一级目录为图片根目录 <img src="/2024/06/10/blog-github/image-20240811053515406.png" alt="image-20240811053515406"></p></li>
+</ol>
+<figure>
+<img src="/2024/06/10/blog-github/image-20240811055105205.png" alt><figcaption>image-20240811055105205</figcaption>
+</figure>
+<ol start="3" type="1">
+<li><p>在md 文件中 用 <code>imgs\blogname\xxx.png</code> 获取图片</p>
+<p>1+2部其实就消除了 <code>..</code></p></li>
+</ol></li>
+</ol>
+<h3 id="md文件-head">md文件 head</h3>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 测试文章</span><br><span class="line">date: 2021-06-10 16:35:20</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">-</span> 原创</span><br><span class="line">categories:</span><br><span class="line"><span class="section">- Java</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
+<p>将<code>&lt;!-- more --&gt;</code>插入到文章后，主页在插入处截止了预览，出现的阅读全文的按钮。</p>
+<h3 id="问题-路径错误.com">问题： 路径错误/.com//</h3>
+<blockquote>
+<p>hexo图片显示不出且图片路径错误/.com//</p>
+<p>https://blog.csdn.net/sluck_0430/article/details/136431303</p>
+<p>卸载 <strong>hexo-asset-image</strong> 插件：npm uninstall hexo-asset-image 即可</p>
+</blockquote>
+<h2 id="公式渲染">公式渲染</h2>
+<ol type="1">
+<li>首先，在NexT主题配置文件中将<code>mathjax</code>设为渲染引擎</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">math:</span><br><span class="line">  ...</span><br><span class="line">  mathjax:</span><br><span class="line">    enable: true</span><br></pre></td></tr></table></figure>
+<p>mathjax 和 katex 是互斥的两个选项，enable 不能同时 true或 false。</p>
+<p>如果设置 <code>mathjax : true</code> ，就需要更换渲染引擎， <code>hexo-renderer-pandoc</code> 或 <code>hexo-renderer-kramed</code>。</p>
+<p>如果 <code>katex : true</code> ，则需要更换 hexo-renderer-markdown-it ，或者在原来的 hexo-renderer-marked 引擎下使用 markdown-it-katex plugin。</p>
+<ol start="2" type="1">
+<li>安装插件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --savenpm </span><br><span class="line">npm install hexo-renderer-pandoc --save</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li><p>md head添加mathjax</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: xxx</span><br><span class="line">......</span><br><span class="line">mathjax: true</span><br></pre></td></tr></table></figure></li>
+<li><p>重新生成和启动本地服务器</p>
+<p>hexo clean &amp;&amp; hexo s</p></li>
+</ol>
+<p>就可以显示公式了，像这样 <span class="math display"><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -2.148ex;" xmlns="http://www.w3.org/2000/svg" width="31.694ex" height="5.428ex" role="img" focusable="false" viewbox="0 -1449.5 14008.8 2399"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D43B" d="M228 637Q194 637 192 641Q191 643 191 649Q191 673 202 682Q204 683 219 683Q260 681 355 681Q389 681 418 681T463 682T483 682Q499 682 499 672Q499 670 497 658Q492 641 487 638H485Q483 638 480 638T473 638T464 637T455 637Q416 636 405 634T387 623Q384 619 355 500Q348 474 340 442T328 395L324 380Q324 378 469 378H614L615 381Q615 384 646 504Q674 619 674 627T617 637Q594 637 587 639T580 648Q580 650 582 660Q586 677 588 679T604 682Q609 682 646 681T740 680Q802 680 835 681T871 682Q888 682 888 672Q888 645 876 638H874Q872 638 869 638T862 638T853 637T844 637Q805 636 794 634T776 623Q773 618 704 340T634 58Q634 51 638 51Q646 48 692 46H723Q729 38 729 37T726 19Q722 6 716 0H701Q664 2 567 2Q533 2 504 2T458 2T437 1Q420 1 420 10Q420 15 423 24Q428 43 433 45Q437 46 448 46H454Q481 46 514 49Q520 50 522 50T528 55T534 64T540 82T547 110T558 153Q565 181 569 198Q602 330 602 331T457 332H312L279 197Q245 63 245 58Q245 51 253 49T303 46H334Q340 38 340 37T337 19Q333 6 327 0H312Q275 2 178 2Q144 2 115 2T69 2T48 1Q31 1 31 10Q31 12 34 24Q39 43 44 45Q48 46 59 46H65Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Q285 635 228 637Z"/></g><g data-mml-node="TeXAtom" transform="translate(864,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D716" d="M227 -11Q149 -11 95 41T40 174Q40 262 87 322Q121 367 173 396T287 430Q289 431 329 431H367Q382 426 382 411Q382 385 341 385H325H312Q191 385 154 277L150 265H327Q340 256 340 246Q340 228 320 219H138V217Q128 187 128 143Q128 77 160 52T231 26Q258 26 284 36T326 57T343 68Q350 68 354 58T358 39Q358 36 357 35Q354 31 337 21T289 0T227 -11Z"/></g></g></g><g data-mml-node="mo" transform="translate(1201.1,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"/></g><g data-mml-node="mi" transform="translate(1590.1,0)"><path data-c="1D463" d="M173 380Q173 405 154 405Q130 405 104 376T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Q21 294 29 316T53 368T97 419T160 441Q202 441 225 417T249 361Q249 344 246 335Q246 329 231 291T200 202T182 113Q182 86 187 69Q200 26 250 26Q287 26 319 60T369 139T398 222T409 277Q409 300 401 317T383 343T365 361T357 383Q357 405 376 424T417 443Q436 443 451 425T467 367Q467 340 455 284T418 159T347 40T241 -11Q177 -11 139 22Q102 54 102 117Q102 148 110 181T151 298Q173 362 173 380Z"/></g><g data-mml-node="mo" transform="translate(2075.1,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"/></g><g data-mml-node="mo" transform="translate(2741.9,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"/></g><g data-mml-node="mfrac" transform="translate(3797.6,0)"><g data-mml-node="mn" transform="translate(220,676)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"/></g><g data-mml-node="mn" transform="translate(220,-686)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"/></g><rect width="700" height="60" x="120" y="220"/></g><g data-mml-node="mrow" transform="translate(4737.6,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><path data-c="28" d="M701 -940Q701 -943 695 -949H664Q662 -947 636 -922T591 -879T537 -818T475 -737T412 -636T350 -511T295 -362T250 -186T221 17T209 251Q209 962 573 1361Q596 1386 616 1405T649 1437T664 1450H695Q701 1444 701 1441Q701 1436 681 1415T629 1356T557 1261T476 1118T400 927T340 675T308 359Q306 321 306 250Q306 -139 400 -430T690 -924Q701 -936 701 -940Z"/></g><g data-mml-node="mn" transform="translate(736,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"/></g><g data-mml-node="mo" transform="translate(1458.2,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"/></g><g data-mml-node="mfrac" transform="translate(2458.4,0)"><g data-mml-node="mn" transform="translate(255,676)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"/></g><g data-mml-node="mi" transform="translate(220,-686)"><path data-c="1D70B" d="M132 -11Q98 -11 98 22V33L111 61Q186 219 220 334L228 358H196Q158 358 142 355T103 336Q92 329 81 318T62 297T53 285Q51 284 38 284Q19 284 19 294Q19 300 38 329T93 391T164 429Q171 431 389 431Q549 431 553 430Q573 423 573 402Q573 371 541 360Q535 358 472 358H408L405 341Q393 269 393 222Q393 170 402 129T421 65T431 37Q431 20 417 5T381 -10Q370 -10 363 -7T347 17T331 77Q330 86 330 121Q330 170 339 226T357 318T367 358H269L268 354Q268 351 249 275T206 114T175 17Q164 -11 132 -11Z"/></g><rect width="770" height="60" x="120" y="220"/></g><g data-mml-node="mi" transform="translate(3468.4,0)"><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z"/><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(500,0)"/><path data-c="63" d="M370 305T349 305T313 320T297 358Q297 381 312 396Q317 401 317 402T307 404Q281 408 258 408Q209 408 178 376Q131 329 131 219Q131 137 162 90Q203 29 272 29Q313 29 338 55T374 117Q376 125 379 127T395 129H409Q415 123 415 120Q415 116 411 104T395 71T366 33T318 2T249 -11Q163 -11 99 53T34 214Q34 318 99 383T250 448T370 421T404 357Q404 334 387 320Z" transform="translate(892,0)"/><path data-c="74" d="M27 422Q80 426 109 478T141 600V615H181V431H316V385H181V241Q182 116 182 100T189 68Q203 29 238 29Q282 29 292 100Q293 108 293 146V181H333V146V134Q333 57 291 17Q264 -10 221 -10Q187 -10 162 2T124 33T105 68T98 100Q97 107 97 248V385H18V422H27Z" transform="translate(1336,0)"/><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(1725,0)"/><path data-c="6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" transform="translate(2225,0)"/></g><g data-mml-node="mo" transform="translate(6249.4,0)"><path data-c="2061" d=""/></g><g data-mml-node="mrow" transform="translate(6416.1,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><path data-c="28" d="M180 96T180 250T205 541T266 770T353 944T444 1069T527 1150H555Q561 1144 561 1141Q561 1137 545 1120T504 1072T447 995T386 878T330 721T288 513T272 251Q272 133 280 56Q293 -87 326 -209T399 -405T475 -531T536 -609T561 -640Q561 -643 555 -649H527Q483 -612 443 -568T353 -443T266 -270T205 -41Z"/></g><g data-mml-node="mfrac" transform="translate(597,0)"><g data-mml-node="mi" transform="translate(220,676)"><path data-c="1D463" d="M173 380Q173 405 154 405Q130 405 104 376T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Q21 294 29 316T53 368T97 419T160 441Q202 441 225 417T249 361Q249 344 246 335Q246 329 231 291T200 202T182 113Q182 86 187 69Q200 26 250 26Q287 26 319 60T369 139T398 222T409 277Q409 300 401 317T383 343T365 361T357 383Q357 405 376 424T417 443Q436 443 451 425T467 367Q467 340 455 284T418 159T347 40T241 -11Q177 -11 139 22Q102 54 102 117Q102 148 110 181T151 298Q173 362 173 380Z"/></g><g data-mml-node="mi" transform="translate(259.5,-686)"><path data-c="1D716" d="M227 -11Q149 -11 95 41T40 174Q40 262 87 322Q121 367 173 396T287 430Q289 431 329 431H367Q382 426 382 411Q382 385 341 385H325H312Q191 385 154 277L150 265H327Q340 256 340 246Q340 228 320 219H138V217Q128 187 128 143Q128 77 160 52T231 26Q258 26 284 36T326 57T343 68Q350 68 354 58T358 39Q358 36 357 35Q354 31 337 21T289 0T227 -11Z"/></g><rect width="685" height="60" x="120" y="220"/></g><g data-mml-node="mo" transform="translate(1522,0) translate(0 -0.5)"><path data-c="29" d="M35 1138Q35 1150 51 1150H56H69Q113 1113 153 1069T243 944T330 771T391 541T416 250T391 -40T330 -270T243 -443T152 -568T69 -649H56Q43 -649 39 -647T35 -637Q65 -607 110 -548Q283 -316 316 56Q324 133 324 251Q324 368 316 445Q278 877 48 1123Q36 1137 35 1138Z"/></g></g><g data-mml-node="mo" transform="translate(8535.1,0) translate(0 -0.5)"><path data-c="29" d="M34 1438Q34 1446 37 1448T50 1450H56H71Q73 1448 99 1423T144 1380T198 1319T260 1238T323 1137T385 1013T440 864T485 688T514 485T526 251Q526 134 519 53Q472 -519 162 -860Q139 -885 119 -904T86 -936T71 -949H56Q43 -949 39 -947T34 -937Q88 -883 140 -813Q428 -430 428 251Q428 453 402 628T338 922T245 1146T145 1309T46 1425Q44 1427 42 1429T39 1433T36 1436L34 1438Z"/></g></g></g></g></svg></mjx-container></span></p>
+<h2 id="主题">主题</h2>
+<p>==TODO==</p>
+<h1 id="reference">REFERENCE</h1>
+<blockquote>
+<p>REF：</p>
+<p>Github Pages + Hexo框架 + NexT主题搭建个人博客：https://blog.csdn.net/Darlinnn/article/details/130279000</p>
+<p>Git 多个GitHub账号配置和多个Hexo博客地址配置：https://blog.csdn.net/Tmraz/article/details/107400453#5__55</p>
+<p>GitHub Pages + Hexo搭建个人博客网站，史上最全教程：https://blog.csdn.net/yaorongke/article/details/119089190</p>
+<p>【Hexo】GitHub+Typora写博客+图片上传:https://blog.csdn.net/Qxiaofei_/article/details/124629908</p>
+<p><a target="_blank" rel="noopener" href="https://roro4ever.github.io/2019/12/01/hexo-Next%E4%B8%BB%E9%A2%98%E6%B8%B2%E6%9F%93-latex-%E5%85%AC%E5%BC%8F%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/hexo-next%E4%B8%BB%E9%A2%98%E6%B8%B2%E6%9F%93-latex-%E5%85%AC%E5%BC%8F%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/">Hexo Next主题渲染 Latex 公式的配置方法</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://epichide.github.io">Epichide</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://epichide.github.io/2024/06/10/blog-github/">https://epichide.github.io/2024/06/10/blog-github/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/github/">github</a><a class="post-meta__tags" href="/tags/typora/">typora</a><a class="post-meta__tags" href="/tags/hexo/">hexo</a></div><div class="post-share"><div class="social-share" data-image="/img/fu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="prev-post pull-full" href="/2024/06/10/ssh-github/" title="配置 SSH 管理多个 Git 仓库和以及多个 Github 账号"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">配置 SSH 管理多个 Git 仓库和以及多个 Github 账号</div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a href="/2024/06/10/ssh-github/" title="配置 SSH 管理多个 Git 仓库和以及多个 Github 账号"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-10</div><div class="title">配置 SSH 管理多个 Git 仓库和以及多个 Github 账号</div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/fu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Epichide</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><a id="card-info-btn" href="https://epichide.github.io"><i class="fab fa-github"></i><span>go to github</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#hexo-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">Hexo 基本操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AB%99%E7%82%B9%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">站点文件配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%BB%E9%A2%98"><span class="toc-number">2.1.</span> <span class="toc-text">添加主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2deploy%E5%88%B0github"><span class="toc-number">2.2.</span> <span class="toc-text">部署deploy到github</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AAgithub%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE%E5%92%8C%E5%A4%9A%E4%B8%AAhexo%E5%8D%9A%E5%AE%A2%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.1.</span> <span class="toc-text">多个GitHub账号配置和多个Hexo博客地址配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.2.</span> <span class="toc-text">删除全局配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AElocal%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.3.</span> <span class="toc-text">设置local配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%88%B0github"><span class="toc-number">2.2.4.</span> <span class="toc-text">部署到Github</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">2.2.5.</span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%981"><span class="toc-number">2.2.5.1.</span> <span class="toc-text">问题1：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%982"><span class="toc-number">2.2.5.2.</span> <span class="toc-text">问题2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%983blog-404"><span class="toc-number">2.2.5.3.</span> <span class="toc-text">问题3：blog 404</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#typora%E6%9B%B4%E6%96%B0%E8%87%B3blog"><span class="toc-number">3.</span> <span class="toc-text">typora更新至blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#generate-md-%E5%92%8Cimage%E5%AD%98%E6%94%BE%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">generate md 和image存放结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#typora%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84"><span class="toc-number">3.2.</span> <span class="toc-text">typora图片路径</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#post_asset_folder-%E4%B8%BA-true"><span class="toc-number">3.2.1.</span> <span class="toc-text">post_asset_folder 为 true</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#post_asset_folder-%E4%B8%BA-false"><span class="toc-number">3.2.2.</span> <span class="toc-text">post_asset_folder 为 false</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#md%E6%96%87%E4%BB%B6-head"><span class="toc-number">3.2.3.</span> <span class="toc-text">md文件 head</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98-%E8%B7%AF%E5%BE%84%E9%94%99%E8%AF%AF.com"><span class="toc-number">3.2.4.</span> <span class="toc-text">问题： 路径错误&#x2F;.com&#x2F;&#x2F;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F%E6%B8%B2%E6%9F%93"><span class="toc-number">3.3.</span> <span class="toc-text">公式渲染</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98"><span class="toc-number">3.4.</span> <span class="toc-text">主题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-number">4.</span> <span class="toc-text">REFERENCE</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/11/use-note-block/" title="Untitled">Untitled</a><time datetime="2024-08-11T13:42:11.242Z" title="Created 2024-08-11 21:42:11">2024-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/10/Chan%E2%80%93Vese-Segmentation/" title="chan vess segmentation">chan vess segmentation</a><time datetime="2024-06-10T08:35:20.000Z" title="Created 2024-06-10 16:35:20">2024-06-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/10/ssh-github/" title="配置 SSH 管理多个 Git 仓库和以及多个 Github 账号">配置 SSH 管理多个 Git 仓库和以及多个 Github 账号</a><time datetime="2024-06-10T08:35:20.000Z" title="Created 2024-06-10 16:35:20">2024-06-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/10/blog-github/" title="HEXO typora github blog 博客搭建">HEXO typora github blog 博客搭建</a><time datetime="2024-06-10T08:35:20.000Z" title="Created 2024-06-10 16:35:20">2024-06-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By Epichide</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
