@@ -390,6 +390,12 @@ h3::before,
   -o-animation: titleScale 1s;
   -ms-animation: titleScale 1s;
   animation: titleScale 1s;
+  background-color: none;
+  border: none;
+}
+#site-title:hover,
+#site-subtitle:hover {
+  background-color: rgba(0,0,0,0);
 }
 canvas:not(#ribbon-canvas),
 #web_bg {
@@ -1815,6 +1821,25 @@ figure.highlight pre .javascript .function {
 }
 #article-container .gist table td {
   border: none;
+}
+figure {
+  display: block;
+}
+figcaption {
+  text-align: center;
+  font-size: 1em;
+  color: highlight-comment;
+  line-height: 1em;
+  margin-bottom: 1em;
+  display: block;
+  color: #918787;
+}
+figcaption::before {
+  content: "Fig ";
+  font-weight: bold;
+  font-size: 0.85em;
+  color: #918787;
+  margin-right: 0.5em;
 }
 .article-sort {
   margin-left: 10px;
@@ -3781,7 +3806,6 @@ h1:not(.post-title) {
   text-align: center;
   line: height 2.5em;
   color: #88acdb;
-  background-color: #eff0f7;
   padding-block: 0.5em;
   font-weight: bolder;
   font-size: 1.4rem;
