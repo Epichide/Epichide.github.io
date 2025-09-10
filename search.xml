@@ -194,33 +194,6 @@
     
     
     <entry>
-      <title>Hexo 富文本</title>
-      <link href="/2024/06/10/use-note-block/"/>
-      <url>/2024/06/10/use-note-block/</url>
-      
-        <content type="html"><![CDATA[<h1 id="在-hexo-中使用-note-提示块">在 Hexo 中使用 NOTE 提示块</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;% note default %&#125;</span><br><span class="line">一个 default 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note primary %&#125;</span><br><span class="line">一个 primary 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note success %&#125;</span><br><span class="line">一个 success 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note info %&#125;</span><br><span class="line">一个 info 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note warning %&#125;</span><br><span class="line">一个 warning 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note danger %&#125;</span><br><span class="line">一个 danger 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><div class="note default flat"><p>一个 default 提示</p></div><div class="note primary flat"><p>一个 primary 提示</p></div><div class="note success flat"><p>一个 success 提示</p></div><div class="note info flat"><p>一个 info 提示</p></div><div class="note warning flat"><p>一个 warning 提示</p></div><div class="note danger flat"><p>一个 danger 提示</p></div><h1 id="使用-tabs-标签">使用 Tabs 标签</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;% tabs 标签, 1 %&#125; </span><br><span class="line">&lt;!-- tab --&gt;</span><br><span class="line">**选项卡 1** </span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&lt;!-- tab --&gt;</span><br><span class="line">**选项卡 2**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&lt;!-- tab 标签三 --&gt;</span><br><span class="line">**选项卡 3** , 名字为 `TAB三`</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&#123;% endtabs %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">标签 1</button><button type="button" class="tab">标签 2</button><button type="button" class="tab">标签三</button></div><div class="tab-contents"><div class="tab-item-content active"><p><strong>选项卡 1</strong></p></div><div class="tab-item-content"><p><strong>选项卡 2</strong></p></div><div class="tab-item-content"><p><strong>选项卡 3</strong> , 名字为 <code>TAB三</code></p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>]]></content>
-      
-      
-      <categories>
-          
-          <category> web </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> hexo </tag>
-            
-            <tag> markdown </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>配置 SSH 管理多个 Git 仓库和以及多个 Github 账号</title>
       <link href="/2024/06/10/ssh-github/"/>
       <url>/2024/06/10/ssh-github/</url>
@@ -240,6 +213,33 @@
             <tag> github </tag>
             
             <tag> ssh </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hexo 富文本</title>
+      <link href="/2024/06/10/use-note-block/"/>
+      <url>/2024/06/10/use-note-block/</url>
+      
+        <content type="html"><![CDATA[<h1 id="在-hexo-中使用-note-提示块">在 Hexo 中使用 NOTE 提示块</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;% note default %&#125;</span><br><span class="line">一个 default 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note primary %&#125;</span><br><span class="line">一个 primary 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note success %&#125;</span><br><span class="line">一个 success 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note info %&#125;</span><br><span class="line">一个 info 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note warning %&#125;</span><br><span class="line">一个 warning 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% note danger %&#125;</span><br><span class="line">一个 danger 提示</span><br><span class="line">&#123;% endnote %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><div class="note default flat"><p>一个 default 提示</p></div><div class="note primary flat"><p>一个 primary 提示</p></div><div class="note success flat"><p>一个 success 提示</p></div><div class="note info flat"><p>一个 info 提示</p></div><div class="note warning flat"><p>一个 warning 提示</p></div><div class="note danger flat"><p>一个 danger 提示</p></div><h1 id="使用-tabs-标签">使用 Tabs 标签</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;% tabs 标签, 1 %&#125; </span><br><span class="line">&lt;!-- tab --&gt;</span><br><span class="line">**选项卡 1** </span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&lt;!-- tab --&gt;</span><br><span class="line">**选项卡 2**</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&lt;!-- tab 标签三 --&gt;</span><br><span class="line">**选项卡 3** , 名字为 `TAB三`</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&#123;% endtabs %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">标签 1</button><button type="button" class="tab">标签 2</button><button type="button" class="tab">标签三</button></div><div class="tab-contents"><div class="tab-item-content active"><p><strong>选项卡 1</strong></p></div><div class="tab-item-content"><p><strong>选项卡 2</strong></p></div><div class="tab-item-content"><p><strong>选项卡 3</strong> , 名字为 <code>TAB三</code></p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>]]></content>
+      
+      
+      <categories>
+          
+          <category> web </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+            <tag> markdown </tag>
             
         </tags>
       

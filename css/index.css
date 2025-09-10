@@ -1471,7 +1471,7 @@ table td {
   vertical-align: middle;
 }
 *::selection {
-  background: #00c4b6;
+  background: #a7c400;
   color: #f7f7f7;
 }
 button {
@@ -2881,7 +2881,7 @@ h1.page-title + .tag-cloud-list {
   color: #49b1f5;
 }
 #aside-content #card-toc .toc-content .toc-link.active {
-  background: #00c4b6;
+  background: #a7c400;
   color: #fff;
 }
 #aside-content .sticky_layout:only-child > :first-child {
@@ -3311,7 +3311,22 @@ h1.page-title + .tag-cloud-list {
   --rawblock-edit-panel-bd: var(--block-bg-color);
   --item-hover-bg-color: #f6f8fa;
   --active-file-bg-color: var(--block-bg-color);
-  --hover-color: #00c4b6;
+  --hover-color: #49b1f5;
+}
+#write h1 {
+  counter-reset: h2;
+}
+#write h2 {
+  counter-reset: h3;
+}
+#write h3 {
+  counter-reset: h4;
+}
+#write h4 {
+  counter-reset: h5;
+}
+#write h5 {
+  counter-reset: h6;
 }
 #page-header {
   position: relative;
@@ -3796,6 +3811,9 @@ h1.page-title + .tag-cloud-list {
 #nav .site-page:not(.child):hover:after {
   width: 100%;
 }
+h1 {
+  counter-increment: h1;
+}
 h1:not(.post-title) {
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
@@ -3805,11 +3823,11 @@ h1:not(.post-title) {
   margin-top: 30px;
   text-align: center;
   line: height 2.5em;
-  color: #88acdb;
+  color: #e05119;
   padding-block: 0.5em;
   font-weight: bolder;
   font-size: 1.4rem;
-  border: 3px solid;
+  border: 3px solid #eeae99;
   border-radius: 15px;
 }
 h1:not(.post-title)::before,
@@ -3818,46 +3836,40 @@ h1:not(.post-title)::after {
 }
 h1:not(.post-title):hover {
   color: var(--hover-color);
-  background-color: #eff7f0;
+  background-color: #eff4f7;
   font-size: 1.5rem;
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
+  border: 3px solid #accddd;
 }
 h2 {
-  margin: 0.5em auto;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  -ms-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-  background: #85accd;
-/* padding: 1px 12.5px;
-  border-radius: 4px; */
+/*增加对h3标题的修改*/
+  background-color: #f5f5f5;
   display: inline;
-  color: #fdfeff;
-  line-height: 1.6em;
-  font-size: 1.3rem;
-  text-align: left;
-  font-size: 1.3rem;
-}
-h2::after {
-  content: "";
-  border-bottom: 0.15em solid #428bca;
-  display: block;
-  line-height: 0.5em;
+  color: #e05119;
 }
 h2::before {
-  content: "##";
-  margin-left: 0.5em;
-  color: #fdfeff;
+  counter-increment: h2;
+  content: "\f02d" " " counter(h1) " . " counter(h2);
+  color: #e05119;
+  margin-right: 0.5rem;
+  padding-right: 0.5rem;
+  font-family: FontAwesome;
+  padding-left: 0.2rem;
+  font-size: 90%;
 }
-h2::before,
 h2::after {
-  font-family: Arial;
-  margin-right: 1rem;
+/*增加对h3标题后面的修饰*/
+  display: inline-block;
+  content: " ";
+  vertical-align: text-top;
+  border-bottom: 13px solid #eeeae8;
+  border-right: 15px solid transparent;
+  background-color: #fff;
+  margin-left: 0.8rem;
 }
 h2:hover {
   -webkit-transition: all 0.3s ease-in-out;
@@ -3866,6 +3878,7 @@ h2:hover {
   -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   background-color: var(--hover-color);
+  color: #fff;
 }
 h2:hover::after {
   -webkit-transition: all 0.6s ease-in-out;
@@ -3875,6 +3888,14 @@ h2:hover::after {
   transition: all 0.6s ease-in-out;
   border-bottom: 0.15em solid var(--hover-color);
 }
+h2:hover::before {
+  content: "\f518" "  " counter(h1) " . " counter(h2);
+  color: #fff;
+}
+h3 {
+  counter-increment: h3;
+  color: #e05119;
+}
 h3:hover a {
   text-decoration: underline;
 }
@@ -3882,22 +3903,33 @@ h3:hover {
   color: var(--hover-color);
 }
 h3::before {
-  content: '\f101';
+  content: '\f097' "  " counter(h1) " . " counter(h2) " . " counter(h3);
+  color: #e05119;
   margin-right: 1rem;
+  font-family: FontAwesome;
   transition: all 0.3s ease-in-out;
 }
 h3:hover::before {
+  content: '\f02e' "  " counter(h1) " . " counter(h2) " . " counter(h3);
   margin-right: 1.5rem;
   color: var(--hover-color);
   -webkit-font-smoothing: antialiased;
   transition: all 0.3s ease-in-out;
+}
+h4 {
+  counter-increment: h4;
+}
+h4::before {
+  content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4);
+  color: #e05119;
+  margin-right: 1rem;
 }
 #pagination .pagination {
   margin-top: 20px;
   text-align: center;
 }
 #pagination .page-number.current {
-  background: #00c4b6;
+  background: #a7c400;
   color: var(--white);
 }
 #pagination .pagination-info {
