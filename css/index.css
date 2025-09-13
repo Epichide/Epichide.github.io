@@ -40,7 +40,8 @@ abbr[title] {
 
 b,
 strong {
-  font-weight: bolder
+  font-weight: bolder;
+  color: #034f91;
 }
 
 code,
@@ -1382,7 +1383,7 @@ body {
   background: var(--global-bg);
   color: var(--font-color);
   font-size: var(--global-font-size);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Lato, Roboto, 'PingFang SC', 'Microsoft JhengHei', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Lato, Roboto, 'PingFang SC', 'Microsoft YaHei';
   line-height: 2;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   scroll-behavior: smooth;
@@ -1667,7 +1668,7 @@ figure.highlight pre .javascript .function {
 #article-container pre,
 #article-container code {
   font-size: var(--global-font-size);
-  font-family: consolas, Menlo, 'PingFang SC', 'Microsoft JhengHei', sans-serif !important;
+  font-family: consolas, Menlo, 'PingFang SC', 'Microsoft YaHei' !important;
   border-radius: 6px;
 }
 #article-container code {
@@ -3312,6 +3313,7 @@ h1.page-title + .tag-cloud-list {
   --item-hover-bg-color: #f6f8fa;
   --active-file-bg-color: var(--block-bg-color);
   --hover-color: #49b1f5;
+  counter-reset: h2 0 h3 0 h4 0 h5 0 h6 0;
 }
 #write h1 {
   counter-reset: h2;
@@ -3847,13 +3849,14 @@ h1:not(.post-title):hover {
 }
 h2 {
 /*增加对h3标题的修改*/
+  counter-increment: h2;
+  counter-reset: h3;
   background-color: #f5f5f5;
   display: inline;
   color: #e05119;
 }
 h2::before {
-  counter-increment: h2;
-  content: "\f02d" " " counter(h1) " . " counter(h2);
+  content: "\f02d" " " counter(h2);
   color: #e05119;
   margin-right: 0.5rem;
   padding-right: 0.5rem;
@@ -3889,11 +3892,12 @@ h2:hover::after {
   border-bottom: 0.15em solid var(--hover-color);
 }
 h2:hover::before {
-  content: "\f518" "  " counter(h1) " . " counter(h2);
+  content: "\f518" "  " counter(h2);
   color: #fff;
 }
 h3 {
   counter-increment: h3;
+  counter-reset: h4;
   color: #e05119;
 }
 h3:hover a {
@@ -3903,14 +3907,14 @@ h3:hover {
   color: var(--hover-color);
 }
 h3::before {
-  content: '\f097' "  " counter(h1) " . " counter(h2) " . " counter(h3);
+  content: '\f097' "  " counter(h2) " . " counter(h3);
   color: #e05119;
   margin-right: 1rem;
   font-family: FontAwesome;
   transition: all 0.3s ease-in-out;
 }
 h3:hover::before {
-  content: '\f02e' "  " counter(h1) " . " counter(h2) " . " counter(h3);
+  content: '\f02e' "  " counter(h2) " . " counter(h3);
   margin-right: 1.5rem;
   color: var(--hover-color);
   -webkit-font-smoothing: antialiased;
@@ -3918,9 +3922,10 @@ h3:hover::before {
 }
 h4 {
   counter-increment: h4;
+  counter-reset: h5;
 }
 h4::before {
-  content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4);
+  content: counter(h2) "." counter(h3) "." counter(h4);
   color: #e05119;
   margin-right: 1rem;
 }
