@@ -179,6 +179,98 @@ template {
 [hidden] {
   display: none
 }
+.alert {
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: 4px;
+  position: relative;
+  display: block;
+}
+.alert.content blockquote,
+.content .alert {
+  border-left: 4px solid #0078d4;
+  padding: 1em 1.5em 1em 1em;
+  margin: 1em 0;
+  border-radius: 4px;
+}
+.alert::before {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  display: block;
+  font-family: "Font Awesome 5 Free", sans-serif;
+  letter-spacing: 0.15em;
+}
+body.night .alert,
+body.night .content .alert,
+body.night .alert.content blockquote,
+body.night .content .alert blockquote {
+  background-color: #373d48 !important;
+  border-color: #434a56 !important;
+}
+.alert-note {
+  border-color: #0078d4 !important;
+  background: #f3f6fb !important;
+}
+.alert-note::before {
+  content: "\f05a  NOTE";
+  color: #0078d4;
+}
+.alert-warning {
+  border-color: #e0a800 !important;
+  background: #fffbe6 !important;
+}
+.alert-warning::before {
+  content: "\f071  WARNING";
+  color: #e0a800;
+}
+.alert-tip {
+  border-color: #28a745 !important;
+  background: #e6ffed !important;
+}
+.alert-tip::before {
+  content: "\f0eb  REFERENCE";
+  color: #28a745;
+}
+.alert-important {
+  border-color: #d63384 !important;
+  background: #f3f6fb !important;
+}
+.alert-important::before {
+  content: "\f06a  IMPORTANT";
+  color: #d63384;
+}
+.alert-caution {
+  border-color: #fd7e14 !important;
+  background: #fff5e6 !important;
+}
+.alert-caution::before {
+  content: "\f06d  CAUTION";
+  color: #fd7e14;
+}
+.alert-info {
+  border-color: #17a2b8 !important;
+  background: #e6f7ff !important;
+}
+.alert-info::before {
+  content: "\f129  INFO";
+  color: #17a2b8;
+}
+.alert-success {
+  border-color: #28a745 !important;
+  background: #e6ffed !important;
+}
+.alert-success::before {
+  content: "\f00c  SUCCESS";
+  color: #28a745;
+}
+.alert-error {
+  border-color: #dc3545 !important;
+  background: #ffe6e6 !important;
+}
+.alert-error::before {
+  content: "\f00d  ERROR";
+  color: #dc3545;
+}
 .limit-one-line,
 #article-container .flink .flink-item-name,
 #article-container .flink .flink-item-desc,
@@ -3815,6 +3907,7 @@ h1.page-title + .tag-cloud-list {
 }
 h1 {
   counter-increment: h1;
+  counter-reset: h2;
 }
 h1:not(.post-title) {
   -webkit-transition: all 0.3s ease-in-out;
