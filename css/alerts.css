@@ -18,6 +18,7 @@
   display: block;
   font-family: "Font Awesome 5 Free", sans-serif;
   letter-spacing: 0.15em;
+  font-size: 0.6em;
 }
 body.night .alert,
 body.night .content .alert,
