@@ -1,0 +1,513 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>双边滤波与快速双边滤波 | Epic</title><meta name="author" content="Epichide"><meta name="copyright" content="Epichide"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="介绍bilateral_filter和fast_bilateral_filter 原理和实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="双边滤波与快速双边滤波">
+<meta property="og:url" content="https://epichide.github.io/2025/09/21/bilateral_filter/index.html">
+<meta property="og:site_name" content="Epic">
+<meta property="og:description" content="介绍bilateral_filter和fast_bilateral_filter 原理和实现">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://epichide.github.io/img/fu.png">
+<meta property="article:published_time" content="2025-09-21T08:35:20.000Z">
+<meta property="article:modified_time" content="2025-09-21T15:50:11.146Z">
+<meta property="article:author" content="Epichide">
+<meta property="article:tag" content="ISP">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://epichide.github.io/img/fu.png"><link rel="shortcut icon" href="/img/fu.png"><link rel="canonical" href="https://epichide.github.io/2025/09/21/bilateral_filter/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '双边滤波与快速双边滤波',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-21 23:50:11'
+}</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Epic" type="application/atom+xml">
+</head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Epic"><span class="site-name">Epic</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">双边滤波与快速双边滤波</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-21T08:35:20.000Z" title="Created 2025-09-21 16:35:20">2025-09-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-09-21T15:50:11.146Z" title="Updated 2025-09-21 23:50:11">2025-09-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ISP/">ISP</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ISP/imageprocess/">imageprocess</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="双边滤波与快速双边滤波"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="bilateral-filter">Bilateral filter</h1>
+<h2 id="bilateral-filter-1">Bilateral filter</h2>
+<blockquote>
+<p>https://blog.csdn.net/DDDDWJDDDD/article/details/146882642</p>
+<p>https://people.csail.mit.edu/sparis/publi/2006/eccv/Paris_06_Fast_Approximation.pdf</p>
+</blockquote>
+<p>The bilateral filter was first introduced by Smith and Brady under the name “SUSAN” .It was rediscovered later by Tomasi and Manduchi [1] who called it the “bilateral filter” which is now the most commonly used name.</p>
+<h3 id="空间权重-颜色权重"><strong>空间权重 + 颜色权重</strong></h3>
+<p>双边滤波的计算依赖两个权重：</p>
+<ol type="1">
+<li><p><strong>空间权重（几何权重）</strong>spatial domain S ：基于像素之间的物理距离，决定了相邻像素的影响程度，通常使用高斯函数计算： <span class="math display">\[
+ f_d(\|x-y\|)=e^{-\frac{\|x-y\|^2}{2 \sigma_s^2} }
+ \]</span></p>
+<ol type="1">
+<li>由参数 <strong>sigmaSpace</strong> 控制，值越大，远处的像素影响越大。</li>
+<li>作用类似于高斯模糊，限制远距离像素的影响。</li>
+</ol></li>
+<li><p><strong>颜色权重（强度权重）</strong>the range domain R：基于像素灰度值（或颜色）之间的相似性，决定了颜色接近的像素影响程度，通常使用高斯函数计算： <span class="math display">\[
+ f_r(|I(x)-I(y)|)=e^{-\frac{|I(x)-I(y)|^2}{2 \sigma_r^2} }
+\]</span></p>
+<ul>
+<li>颜色相近的像素权重较高，差异较大的像素影响较小，从而防止边缘模糊。</li>
+<li>由参数 <strong>sigmaColor</strong> 控制，值越大，即使颜色相差较大仍然会被平滑。</li>
+</ul></li>
+</ol>
+<p>最终的权重由两者的乘积决定： <span class="math display">\[
+w(x, y)=f_d(\|x-y\|) \cdot f_r(|I(x)-I(y)|)
+\]</span></p>
+<p><span class="math display">\[
+w(i, j, k, l)=w_d(i, j, k, l) * w_r(i, j, k, l)=\exp \left(-\frac{(i-k)^2+(j-l)^2}{2 \sigma_d^2}-\frac{\|f(i, j)-f(k, l)\|^2}{2 \sigma_r^2}\right)
+\]</span></p>
+<p>因此，双边滤波器的数据公式可以表示如下： <span class="math display">\[
+g(i, j)=\frac{\left.\left.\sum_{k l} f(k, l) w(i, j, k, l)\right)\right)}{\sum_{k l} w(i, j, k, l)}
+\]</span></p>
+<figure>
+<img src="/2025/09/21/bilateral_filter/Untitled-Diagram-138.png" alt><figcaption>双边滤波算法</figcaption>
+</figure>
+<h3 id="代码实现">代码实现</h3>
+<p>略,有很多,但速度慢</p>
+<ol type="1">
+<li><strong>空域sigma(space）</strong>选取:</li>
+</ol>
+<ul>
+<li><p>sigma（space）越大，图像越平滑，趋于无穷大时，每个权重都一样，类似均值滤波。</p></li>
+<li><p>sigma（space）越小，中心点权重越大，周围点权重越小，对图像的滤波作用越小，趋于零时，输出等同于原图。</p></li>
+</ul>
+<ol start="2" type="1">
+<li><strong>值域sigma(color）</strong>选取:</li>
+</ol>
+<ul>
+<li><p>Sigma(color）越大，边缘越模糊，极限情况为simga无穷大，值域系数近似相等（忽略常数时，将近为exp（0）= 1），与高斯模板（空间域模板）相乘后可认为等效于高斯滤波。</p></li>
+<li><p>Sigma(color）越小，边缘越清晰，极限情况为simga无限接近0，值域系数除了中心位置，其他近似为0（接近exp（-∞） =0），与高斯模板（空间域模板）相乘进行滤波的结果等效于源图像。</p></li>
+</ul>
+<ol start="3" type="1">
+<li><strong>（邻域直径）</strong>d：</li>
+</ol>
+<ul>
+<li><p><strong>小值</strong>（如 5）：影响范围小，平滑效果较弱，但边缘保持较好。</p></li>
+<li><p><strong>大值</strong>（如 15+）：影响范围大，平滑更强，但可能损失更多细节</p></li>
+</ul>
+<p><strong>空间域sigma选取</strong>：其中核大小通常为sigma的6*sigma + 1。因为离中心点3*sigma大小之外的系数与中点的系数只比非常小，可以认为此之外的点与中心点没有任何联系</p>
+<h2 id="fast-bilateral-filter">fast bilateral filter</h2>
+<blockquote>
+<p>REF:</p>
+<p>https://people.csail.mit.edu/sparis/publi/2006/eccv/Paris_06_Fast_Approximation.pdf</p>
+<p>https://zhuanlan.zhihu.com/p/272236618</p>
+</blockquote>
+<h3 id="动机">动机</h3>
+<p>由于 bilateral filter 的 空间kernel是固定的, 但是 和周围像素点的灰度值差kernel却是要每个像素实时计算的,因此在计算过程中,不能用卷积,导致计算时间很长.</p>
+<p>我们知道空域的kernel是根据周围像素点相对于当前像素点的偏移量进行的,那么能否加上把像素值也纳入坐标系, 这样远离的像素值就像是远离的坐标,拥有更低的权重,这样就形成了 x,y,value的 表征空间和卷积核.这样图像就可以用卷积加快计算了, fast bilateral filter 就是利用了这个思想.</p>
+<blockquote>
+<p>卷积: <span class="math display">\[
+I_p=\sum _{q\in \mathcal{K} } kernel(\|\mathbf{p}-\mathbf{q}\|)*I_q
+\]</span></p>
+<p><span class="math display">\[
+\circledast
+\]</span></p>
+<p>二维的卷积数值化表示:</p>
+<p><span class="math display">\[Y(i,j)=\sum_{m=0}^{k_{h}-1}\sum_{n=0}^{k_{w}-1}X(i+m,j+n)\cdot K(m,n)\]</span></p>
+<p>三维的卷积数值化表示</p>
+<p><span class="math display">\[Y(d,i,j)=\sum_{p=0}^{k_{d}-1}\sum_{m=0}^{k_{h}-1}\sum_{n=0}^{k_{w}-1}X(d+p,i+m,j+n)\cdot K(p,m,n)\]</span></p>
+</blockquote>
+<h3 id="bilateral-filter-转为卷积">bilateral filter 转为卷积</h3>
+<p>为了核论文保持一致,我们将上面bilater filter 公式换一种表示： <span class="math display">\[
+\begin{aligned}
+I_{\mathbf{p} }^{\mathrm{bf} } &amp; =\frac{1}{W_{\mathbf{p} }^{\mathrm{bf} }} \sum_{\mathbf{q} \in \mathcal{S} } G_{\sigma_{\mathrm{s} }}(\|\mathbf{p}-\mathbf{q}\|) G_{\sigma_{\mathrm{r} }}\left(\left|I_{\mathbf{p} }-I_{\mathbf{q} }\right|\right) I_{\mathbf{q} } \\
+\text { with } \quad W_{\mathbf{p} }^{\mathrm{bf} } &amp; =\sum_{\mathbf{q} \in \mathcal{S} } G_{\sigma_{\mathrm{s} }}(\|\mathbf{p}-\mathbf{q}\|) G_{\sigma_{\mathrm{r} }}\left(\left|I_{\mathbf{p} }-I_{\mathbf{q} }\right|\right)
+\end{aligned}
+\]</span> 可以看到<span class="math inline">\(I_{\mathbf{p} }^{\mathrm{bf} }\)</span>和<span class="math inline">\(\quad W_{\mathbf{p} }^{\mathrm{bf} }\)</span>两个公式有相同的部分,用向量形式更凸显共同部分： 值（Iq，1）构成一个列向量</p>
+<p><span class="math display">\[
+\left(W_{\mathbf{p}}^{\mathrm{bf}},\ I_{\mathbf{p}}^{\mathrm{bf}}\right)
+= 
+\sum_{\mathbf{q} \in \mathcal{S}}
+G_{\sigma_{\mathrm{s}}}\!\bigl(\|\mathbf{p} - \mathbf{q}\|\bigr)
+G_{\sigma_{\mathrm{r}}}\!\bigl(|I_{\mathbf{p}} - I_{\mathbf{q}}|\bigr)
+\begin{pmatrix}
+I_{\mathbf{q}} \\[4pt]
+1
+\end{pmatrix}
+\]</span></p>
+<p>这里的1可以用Wq=1来代替，得到</p>
+<p><span class="math display">\[
+\left(W_{\mathbf{p}}^{\mathrm{bf}},\ I_{\mathbf{p}}^{\mathrm{bf}}\right)
+=
+\sum_{\mathbf{q}\in S}
+G_{\sigma_{\mathrm{s}}}\!\bigl(\|\mathbf{p}-\mathbf{q}\|\bigr)\,
+G_{\sigma_{\mathrm{r}}}\!\bigl(|I_{\mathbf{p}}-I_{\mathbf{q}}|\bigr)\,
+\begin{pmatrix}
+W_{\mathbf{q}} I_{\mathbf{q}} \\[4pt]
+W_{\mathbf{q}}
+\end{pmatrix}
+\]</span></p>
+<p>但由于前面的weiget 依赖于 <span class="math inline">\(G_{\sigma_{\mathbf{q} }}(|I_{\mathbf{p} }-I_{\mathbf{q} }|)\)</span> ,不是固定的,</p>
+<p>于是文章新增了一个表示灰度值的维度<span class="math inline">\(\zeta\)</span>, 它的定义域是图片像素点数值的定义域.</p>
+<p>并引入 Kronecker 函数. 根据 Kronecker symbol δ(ζ) (1 if ζ = 0, 0 otherwise) 定义, 可知:<span class="math inline">\(\left[\delta(\zeta-I_{\mathbf{q} })=1\right]\Leftrightarrow\left[\zeta=I_{\mathbf{q} }\right]\)</span>, 于是可以重写为:</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+W_{\mathbf{p}}^{\mathrm{bf}} I_{\mathbf{p}}^{\mathrm{bf}} \\[6pt]
+W_{\mathbf{p}}^{\mathrm{bf}}
+\end{pmatrix}
+=
+\sum_{\mathbf{q}\in\mathcal{S}}
+\sum_{\zeta\in\mathcal{R}}
+G_{\alpha_{\mathbf{q}}}\!\bigl(\|\mathbf{p}-\mathbf{q}\|\bigr)\,
+G_{\alpha_{\mathbf{q}}}\!\bigl(|I_{\mathbf{p}}-\zeta|\bigr)\,
+\delta(\zeta - I_{\mathbf{q}})
+\begin{pmatrix}
+W_{\mathbf{q}} I_{\mathbf{q}} \\[6pt]
+W_{\mathbf{q}}
+\end{pmatrix}
+\]</span></p>
+<p>接下来 我们要把原先二维的weight(或者说kernel)转为三维的kernel.,把后面的表示xy二维空间的列向量,转为三维空间的列向量.</p>
+<ol type="1">
+<li>二维转三维卷积kernel</li>
+</ol>
+<p>首先,<span class="math inline">\({\mathrm{S} }\times{\mathrm{R} }\)</span> 积空间(product space) 已经是一个 三维空间: x,y, grayvalue</p>
+<p>其次,<span class="math inline">\(\sum_{\mathbf{q}\in{\mathcal{S} }}\sum_{\zeta\in{\mathcal{R} }}=\sum_{(\mathbf{q},\zeta)\in{\mathcal{S} }\times{\mathcal{R} }}\)</span> ,是三个变量的积分</p>
+<p>于是定义 <span class="math display">\[
+G_{\sigma}\!\bigl(\mathbf{p}, \mathbf{q}, \zeta \bigr)
+=
+G_{\sigma_{\mathrm{s}}}\!\bigl(\|\mathbf{p}-\mathbf{q}\|\bigr)\,
+G_{\sigma_{\mathrm{r}}}\!\bigl(|I_{\mathbf{p}}-\zeta|\bigr)
+\]</span> 作为 高斯kernel</p>
+<p>那么卷积核就构造完成</p>
+<ol start="2" type="1">
+<li>构造被卷积三维图像</li>
+</ol>
+<p>首先,将<span class="math inline">\(\delta(\zeta-I_{\mathbf{q} })\)</span> 移到后面的列向量里 <span class="math display">\[
+\left(\begin{array}{l}{\delta(\zeta-I_{\mathbf{q} }){W_{\mathbf{q} }\ I_{\mathbf{q} }} }\\ {\delta(\zeta-I_{\mathbf{q} }){W_{\mathbf{q} }} }\end{array}\right)
+\]</span> 我们构造两个函数 <span class="math inline">\(i\; and\; w\)</span> <span class="math display">\[
+\begin{aligned}
+w(q,\zeta) &amp;:\; (\mathbf{q}\in\mathcal{S},\ \zeta\in\mathcal{R}) 
+\;\mapsto\; \delta(\zeta - I_{\mathbf{q}})\,W_{\mathbf{q}}, \\[6pt]
+i(q,\zeta) &amp;:\; (\mathbf{q}\in\mathcal{S},\ \zeta\in\mathcal{R}) 
+\;\mapsto\; w(q,\zeta)\,I_{\mathbf{q}}.
+\end{aligned}
+\]</span></p>
+<p>那么列向量可以变换为: <span class="math display">\[
+\begin{pmatrix}
+w(\mathbf{q},\zeta)\,i(\mathbf{q},\zeta) \\[6pt]
+w(\mathbf{q},\zeta)
+\end{pmatrix}
+\]</span></p>
+<p>基于Kronecker 函数, 这两个函数具有以下关系:</p>
+<ol type="1">
+<li>当且仅当 <span class="math inline">\(\zeta = I_q\)</span>,时 <span class="math inline">\(w(q,\zeta)=W_q=1\)</span></li>
+<li>于是自然而然, 当且仅当 <span class="math inline">\(\zeta = I_q\)</span>,时 <span class="math inline">\(i(q,\zeta)=I_q\)</span></li>
+</ol>
+<p>从 x,y,ζ 坐标的图像上来看</p>
+<p>列向量的第一个元素,对应的图像<span class="math inline">\(A\)</span> 是 W*H*Depth尺寸, 在 <span class="math inline">\(\zeta = I(x,y)\)</span> 时候, <span class="math inline">\(A(x,y,\zeta) = I(x,y)\)</span></p>
+<p>列向量的第二个元素,对应的图像<span class="math inline">\(B\)</span> 是 W*H*Depth尺寸, 在 <span class="math inline">\(\zeta = I(x,y)\)</span> 时候, <span class="math inline">\(B(x,y,\zeta) = 1\)</span></p>
+<p>这样被卷积三维图像 就构造好了,变换的过程大致这样</p>
+<figure>
+<img src="/2025/09/21/bilateral_filter/image-20250921200543182.png" alt><figcaption>图片根据亮度分层</figcaption>
+</figure>
+<p>这样就完成了到三维空间的卷积</p>
+<p>于是通过卷积,我们得到了 分子和分母,相除就是滤波后的图片 <span class="math display">\[
+\begin{aligned}
+\bigl(w^{\mathrm{bf}} i^{\mathrm{bf}},\ w^{\mathrm{bf}}\bigr)
+&amp;= g_{\sigma_{\mathrm{s}},\sigma_{\mathrm{r}}} \otimes (w i,\ w), \\[8pt]
+I_{\mathbf{p}}^{\mathrm{bf}}
+&amp;= \frac{w^{\mathrm{bf}}(\mathbf{p}, I_{\mathbf{p}})\ i^{\mathrm{bf}}(\mathbf{p}, I_{\mathbf{p}})}
+       {w^{\mathrm{bf}}(\mathbf{p}, I_{\mathbf{p}})}.
+\end{aligned}
+\]</span></p>
+<h3 id="代码实现-1">代码实现</h3>
+<p>为了加快运算, 又考虑到图像是做模糊操作,于是文章里又做了一部<strong>降采样</strong>进行处理</p>
+<p>这里以OzgurBagci实现的<a target="_blank" rel="noopener" href="https://github.com/OzgurBagci/fastbilateral">fastbilater</a>为对象分析</p>
+<ol type="1">
+<li><p>原本的 空间 sigmaspatial=7, 数值 sigmarange=22,</p></li>
+<li><p>图片使用 空间降采样<strong>samplespatial</strong> =3, 数值降采样 <strong>samplerange</strong>=9</p></li>
+<li><p>那么对到降采样后的各个变量新的数值</p></li>
+</ol>
+<ul>
+<li><p>sigma</p>
+<ul>
+<li>空间 <em>derivedspatial</em> = sigmaspatial / <strong>samplespatial</strong> =2.3</li>
+<li>数值 <em>derivedrange</em> = sigmarange / <strong>samplerange</strong> =2.4</li>
+</ul></li>
+<li><p>kernel的大小空间和数值分别设置为2倍sigma和4倍sigma,因此</p>
+<ul>
+<li><p>空间kernel直径 int(<em>derivedspatial</em> * 2 + 1) =5</p></li>
+<li><p>数值kernel直径 int(2 * <em>derivedrange</em> * 2 + 1=10</p></li>
+</ul></li>
+<li><p>padding 大小: (其实这里不用padding,因为后面的convolve由于设置了mode 自动pad了,)</p>
+<ul>
+<li>空间 xypadding = round(2 * <em>derivedspatial</em> + 1)</li>
+<li>数值 zpadding = round(2 * <em>derivedrange</em> + 1)</li>
+</ul></li>
+<li><p>降采样后的图片大小:</p>
+<ul>
+<li>samplewidth = int(round((width - 1) / samplespatial) + 1 + 2 * xypadding)</li>
+<li>sampleheight = int(round((height - 1) / samplespatial) + 1 + 2 * xypadding)</li>
+<li>sampledepth = int(round(edgedelta / samplerange) + 1 + 2 * zpadding)</li>
+</ul></li>
+</ul>
+<ol start="4" type="1">
+<li><p>构造三维图像:</p>
+<ol type="1">
+<li><p>创建空的samplewidth * sampleheight * sampledepth 数组 ,表示降采样后(x,y,value-minvalue) 的灰度值value, 减去minvalue是为了节省不必要的空间,因为没有这个值</p>
+<ol type="1">
+<li>dataflat = np.zeros(sampleheight * samplewidth * sampledepth)</li>
+</ol></li>
+<li><p>生成图像的索引坐标</p>
+<ol type="1">
+<li>(ygrid, xgrid) = np.meshgrid(range(width), range(height))</li>
+<li>dimx = np.around(xgrid / samplespatial) + xypadding</li>
+<li>dimy = np.around(ygrid / samplespatial) + xypadding</li>
+</ol></li>
+<li><p>生成图像的深度索引坐标</p>
+<ol type="1">
+<li>dimz = np.around((image - edgemin) / samplerange) + zpadding</li>
+</ol></li>
+<li><p>接下来要把原图像的数值填进创建的三维空图像dataflat</p>
+<ol type="1">
+<li>dimx,dimy,dimz 先flatten: flatx,flaty,flatz</li>
+</ol></li>
+<li><p><em>dataflat</em>[flatz + flaty * sampledepth + flatx * samplewidth * sampledepth] = <strong>flatimage</strong> ,这时候 dataflat的size 多数情况下是比 <strong>flatimage</strong> 大很多的,因为它有很多空白值.</p></li>
+</ol>
+<blockquote>
+<p>但要注意,由于降采样的缘故, 原图中相邻位置和,相近亮度的点会落到同一个<em>dataflat</em> 的索引位置:</p>
+<p>比如原图共942000 像素点, 但是到index(=flatz + flaty * sampledepth + flatx * samplewidth * sampledepth), 它的集合大小为678717,少了1/4,说明有1/4的点发生了后面覆盖前面出现</p>
+<p>举例来说原图像:</p>
+<p>X=256 Y=1127 Gray=66.86253 X=256 Y=1128 Gray=68.36141 X=257 Y=1128 Gray=67.08282</p>
+<p>降采样后落到的坐标</p>
+<p>X=134.0 Y=570.0 Z=20.0 X=134.0 Y=570.0 Z=20.0 X=134.0 Y=570.0 Z=20.0</p>
+<p>最后这个坐标幅值为:67.08282</p>
+<p>但数值接近,影响不大</p>
+</blockquote>
+<ol type="1">
+<li><p>dataflat 重新reshape为 (sampleheight, samplewidth, sampledepth), 命名data</p>
+<ol start="2" type="1">
+<li>拷贝一份data,作为后面要计算的weights,类型为bool</li>
+</ol></li>
+<li><p>卷积核:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kerneldim = derivedspatial * 2 + 1</span><br><span class="line">kerneldep = 2 * derivedrange * 2 + 1</span><br><span class="line">halfkerneldim = round(kerneldim / 2)</span><br><span class="line">halfkerneldep = round(kerneldep / 2)</span><br><span class="line"></span><br><span class="line">(gridx, gridy, gridz) = np.meshgrid(range(int(kerneldim)), range(int(kerneldim)), range(int(kerneldep)))</span><br><span class="line">gridx -= int(halfkerneldim)</span><br><span class="line">gridy -= int(halfkerneldim)</span><br><span class="line">gridz -= int(halfkerneldep)</span><br><span class="line"></span><br><span class="line">gridsqr = ((gridx * gridx + gridy * gridy) / (derivedspatial * derivedspatial)) +((gridz * gridz) / (derivedrange * derivedrange))</span><br><span class="line">kernel = np.exp(-0.5 * gridsqr)</span><br></pre></td></tr></table></figure></li>
+<li><p>插值回原尺寸</p>
+<ol type="1">
+<li><p>重新创建浮点坐标</p></li>
+<li><p>```python dimx = (xgrid / samplespatial) + xypadding dimy = (ygrid / samplespatial) + xypadding dimz = (image - edgemin) / samplerange + zpadding <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">3. 插值</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">4. ```python</span><br><span class="line">   interpolate.interpn((range(normalblurdata.shape[0]), range(normalblurdata.shape[1]),</span><br><span class="line">                              range(normalblurdata.shape[2])), normalblurdata, (dimx, dimy, dimz))</span><br></pre></td></tr></table></figure></p></li>
+<li></li>
+<li><p>插值出来的尺寸和dimx 保持一致,就是原图尺寸</p></li>
+</ol></li>
+<li><p>再次讨论各个size的作用</p>
+<ol type="1">
+<li><blockquote>
+<ol type="1">
+<li>dimz1 = np.around((image - edgemin) / samplerange) + zpadding</li>
+<li>sampledepth = int(round(edgedelta / samplerange) + 1 + 2 * zpadding)</li>
+<li>dimz2 = (image - edgemin) / samplerange + zpadding</li>
+<li>第一个dzim是给降维后的data空图索引赋值用的,第二个是data图的第三维sampledepth 的大小,第三个是最后插值回原尺寸用的浮点坐标</li>
+</ol>
+</blockquote></li>
+<li><p>假设zpadding=0, zdim是四舍五入,sampledepth 是向下取整+1, dimz 是浮点,有可能出现</p>
+<ol type="1">
+<li>sampledepth &gt;= dimz2.max()&gt;dimz1.max() &gt;= sampledepth -1</li>
+<li>sampledepth &gt;= dimz1.max()&gt;dimz2.max() &gt;= sampledepth -1</li>
+</ol></li>
+<li><p>这样看似不会在插值的时候出现 dimz2 的值超出 sampledepth 情况,导致插值失败,但是由于sampledepth 是用于创建第三维度大小sampledepth ,实际的取值范围是 [0,sampledepth-1],所以是很容易越界报错的</p></li>
+<li><p>所以源代码可以做如下修改</p>
+<ol type="1">
+<li>去除xypadding和zpadding, 因为没有用</li>
+<li>sampledepth 最好修改为 : <strong>sampledepth = int(round(edgedelta / samplerange) + 2 )</strong>, 另外两个维度同理</li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol>
+<p>​</p>
+<h2 id="导向滤波">导向滤波*</h2>
+<p>#TODO</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://epichide.github.io">Epichide</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://epichide.github.io/2025/09/21/bilateral_filter/">https://epichide.github.io/2025/09/21/bilateral_filter/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ISP/">ISP</a><a class="post-meta__tags" href="/tags/algorithm/">algorithm</a></div><div class="post-share"><div class="social-share" data-image="/img/fu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2025/09/10/%E6%9B%9D%E5%85%89%E6%96%B9%E7%A8%8B/" title="ISO 从胶片相机到数码相机"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">ISO 从胶片相机到数码相机</div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a href="/2025/09/10/%E6%9B%9D%E5%85%89%E6%96%B9%E7%A8%8B/" title="ISO 从胶片相机到数码相机"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-10</div><div class="title">ISO 从胶片相机到数码相机</div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/fu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Epichide</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><a id="card-info-btn" href="https://epichide.github.io"><i class="fab fa-github"></i><span>go to github</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#bilateral-filter"><span class="toc-number">1.</span> <span class="toc-text">Bilateral filter</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#bilateral-filter-1"><span class="toc-number">1.1.</span> <span class="toc-text">Bilateral filter</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E6%9D%83%E9%87%8D-%E9%A2%9C%E8%89%B2%E6%9D%83%E9%87%8D"><span class="toc-number">1.1.1.</span> <span class="toc-text">空间权重 + 颜色权重</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fast-bilateral-filter"><span class="toc-number">1.2.</span> <span class="toc-text">fast bilateral filter</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA"><span class="toc-number">1.2.1.</span> <span class="toc-text">动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bilateral-filter-%E8%BD%AC%E4%B8%BA%E5%8D%B7%E7%A7%AF"><span class="toc-number">1.2.2.</span> <span class="toc-text">bilateral filter 转为卷积</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">1.2.3.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%90%91%E6%BB%A4%E6%B3%A2"><span class="toc-number">1.3.</span> <span class="toc-text">导向滤波*</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/21/bilateral_filter/" title="双边滤波与快速双边滤波">双边滤波与快速双边滤波</a><time datetime="2025-09-21T08:35:20.000Z" title="Created 2025-09-21 16:35:20">2025-09-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/10/%E6%9B%9D%E5%85%89%E6%96%B9%E7%A8%8B/" title="ISO 从胶片相机到数码相机">ISO 从胶片相机到数码相机</a><time datetime="2025-09-10T08:35:20.000Z" title="Created 2025-09-10 16:35:20">2025-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/06/10/soft-hard-link/" title="软/硬链接 - 实现本地笔记选择性更新到博客">软/硬链接 - 实现本地笔记选择性更新到博客</a><time datetime="2025-06-10T08:35:20.000Z" title="Created 2025-06-10 16:35:20">2025-06-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/20/divise-normalization/" title="视觉系统的normalization">视觉系统的normalization</a><time datetime="2024-08-20T08:35:20.000Z" title="Created 2024-08-20 16:35:20">2024-08-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/16/firstjob/" title="my-first-job">my-first-job</a><time datetime="2024-08-16T08:35:22.000Z" title="Created 2024-08-16 16:35:22">2024-08-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Epichide</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'all',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
