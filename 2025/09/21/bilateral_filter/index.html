@@ -7,7 +7,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://epichide.github.io/img/fu.png">
 <meta property="article:published_time" content="2025-09-21T08:35:20.000Z">
-<meta property="article:modified_time" content="2025-09-21T16:02:35.134Z">
+<meta property="article:modified_time" content="2025-09-21T16:04:22.745Z">
 <meta property="article:author" content="Epichide">
 <meta property="article:tag" content="ISP">
 <meta property="article:tag" content="algorithm">
@@ -175,9 +175,9 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2025-09-22 00:02:35'
+  postUpdate: '2025-09-22 00:04:22'
 }</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Epic" type="application/atom+xml">
-</head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Epic"><span class="site-name">Epic</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">双边滤波与快速双边滤波</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-21T08:35:20.000Z" title="Created 2025-09-21 16:35:20">2025-09-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-09-21T16:02:35.134Z" title="Updated 2025-09-22 00:02:35">2025-09-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ISP/">ISP</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ISP/imageprocess/">imageprocess</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="双边滤波与快速双边滤波"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="bilateral-filter">Bilateral filter</h1>
+</head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Epic"><span class="site-name">Epic</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">双边滤波与快速双边滤波</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-21T08:35:20.000Z" title="Created 2025-09-21 16:35:20">2025-09-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-09-21T16:04:22.745Z" title="Updated 2025-09-22 00:04:22">2025-09-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ISP/">ISP</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ISP/imageprocess/">imageprocess</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="双边滤波与快速双边滤波"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="bilateral-filter">Bilateral filter</h1>
 <h2 id="bilateral-filter-1">Bilateral filter</h2>
 <blockquote>
 <p>https://blog.csdn.net/DDDDWJDDDD/article/details/146882642</p>
@@ -413,8 +413,7 @@ I_{\mathbf{p}}^{\mathrm{bf}}
 <li><p>接下来要把原图像的数值填进创建的三维空图像dataflat</p>
 <ol type="1">
 <li>dimx,dimy,dimz 先flatten: flatx,flaty,flatz</li>
-</ol></li>
-<li><p><em>dataflat</em>[flatz + flaty * sampledepth + flatx * samplewidth * sampledepth] = <strong>flatimage</strong> ,这时候 dataflat的size 多数情况下是比 <strong>flatimage</strong> 大很多的,因为它有很多空白值.</p></li>
+<li><em>dataflat</em>[flatz + flaty * sampledepth + flatx * samplewidth * sampledepth] = <strong>flatimage</strong> ,这时候 dataflat的size 多数情况下是比 <strong>flatimage</strong> 大很多的,因为它有很多空白值.</li>
 </ol>
 <blockquote>
 <p>但要注意,由于降采样的缘故, 原图中相邻位置和,相近亮度的点会落到同一个<em>dataflat</em> 的索引位置:</p>
@@ -425,8 +424,7 @@ I_{\mathbf{p}}^{\mathrm{bf}}
 <p>X=134.0 Y=570.0 Z=20.0 X=134.0 Y=570.0 Z=20.0 X=134.0 Y=570.0 Z=20.0</p>
 <p>最后这个坐标幅值为:67.08282</p>
 <p>但数值接近,影响不大</p>
-</blockquote>
-<ol start="6" type="1">
+</blockquote></li>
 <li><p>dataflat 重新reshape为 (sampleheight, samplewidth, sampledepth), 命名data</p></li>
 <li><p>拷贝一份data,作为后面要计算的weights,类型为bool</p></li>
 </ol></li>
